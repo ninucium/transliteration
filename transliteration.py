@@ -12,6 +12,7 @@ dict_letters = {'ий':'y', 'а':'a', 'б':'b','в':'v','г':'g','д':'d','е':'
 file_name = input('Enter file name = ')
 location = input('Enter location to the file. \nLeave empty if file is in the same location = ')
 start_path = os.path.join(location, file_name)
+
 try:
     file = open(start_path)
     buffer = file.read()
@@ -19,7 +20,7 @@ try:
     names = re.split(r'\n', buffer)
 
     ## Creating output file
-    end_path = os.path.join(location, 'english_names.txt')
+    end_path = os.path.join(location, re.split('[.]',file_name)[0] + '_english.txt')
     end_file = open(end_path, 'w')
     end_file.close()
 
@@ -46,6 +47,7 @@ try:
 
     ## Closing file
     end_file.close()
-    print('\n\nFile has been saved')
+    print('\n\nFile has been saved to {}'.format(end_path))
+    
 except:
     print('\n\nError with opening file')
