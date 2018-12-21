@@ -9,21 +9,34 @@ dict_letters = {'ий':'y', 'а':'a', 'б':'b','в':'v','г':'g','д':'d','е':'
               'я':'ya', ' ': ' '}
 
 ## Reading names in russian
-file_name = input('Enter file name = ')
-location = input('Enter location to the file. \nLeave empty if file is in the same location = ')
-start_path = os.path.join(location, file_name)
+file_name = input('Enter path to the file = ')
+start_path = os.path.abspath(file_name)
 
 try:
     file = open(start_path)
+except (FileNotFoundError,OSError) as e:
+    print('Error: %s' % e)
+    quit()
+
+try:
     buffer = file.read()
     file.close()
     names = re.split(r'\n', buffer)
 
     ## Creating output file
-    end_path = os.path.join(location, re.split('[.]',file_name)[0] + '_english.txt')
+    end_path = os.path.join(os.path.dirname(start_path), re.split('[.]',os.path.basename(start_path))[0] + '_english.txt')
+except NameError as e:
+    print('Error: %s' % e)
+    quit()
+
+try:    
     end_file = open(end_path, 'w')
     end_file.close()
+except:
+   print('Error')
+   quit()
 
+try:
     ## Transliteration
     for name in names:
         english_name = ''
@@ -50,4 +63,5 @@ try:
     print('\n\nFile has been saved to {}'.format(end_path))
     
 except:
-    print('\n\nError with opening file')
+    print('\n\nError with transliteration')
+
